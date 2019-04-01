@@ -23,6 +23,7 @@ import (
 	"github.com/giantswarm/kubebuilder-operator/pkg/apis"
 	"github.com/giantswarm/kubebuilder-operator/pkg/controller"
 	"github.com/giantswarm/kubebuilder-operator/pkg/webhook"
+	"github.com/prometheus/common/log"
 	_ "k8s.io/client-go/plugin/pkg/client/auth/gcp"
 	"sigs.k8s.io/controller-runtime/pkg/client/config"
 	"sigs.k8s.io/controller-runtime/pkg/manager"
@@ -32,6 +33,11 @@ import (
 
 func main() {
 	var metricsAddr string
+	err := todo(flag.NewFlagSet("foo", flag.ExitOnError))
+	if err != nil {
+		log.Error(err, "unable to set up client config")
+		os.Exit(1)
+	}
 	flag.StringVar(&metricsAddr, "metrics-addr", ":8080", "The address the metric endpoint binds to.")
 	flag.Parse()
 	logf.SetLogger(logf.ZapLogger(false))
